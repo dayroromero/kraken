@@ -22,13 +22,24 @@ type Country struct {
 	CountryName string
 }
 
+// ContactStr stores basic contact information
 type ContactStr struct {
-	Name    string
-	Email   string
-	Phone   string
-	Address *AddressStr
+	IsPrimary bool
+	Name      string
+	Email     string
+	Phone     string
+	Address   *AddressStr
 }
 
+// EntityAddressStr stores entyty addresses: shipping, mailing
+type EntityAddressStr struct {
+	IsPrimary  bool
+	IsShipping bool
+	Address    *AddressStr
+}
+
+// TaxIdStr stores generic Unique Tax information.
+// It asusmes the existance of an unique national tax id
 type TaxIdStr struct {
 	TaxId   string // Unique national tax id
 	Country string // 3 Char ISO code
