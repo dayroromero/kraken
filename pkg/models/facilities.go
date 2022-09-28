@@ -1,57 +1,61 @@
 package kraken
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 // Object Type: Table
 //EntityStr implements he data structure to characterise entities on the Kraken application
 type EntityStr struct {
-	EntityId     string    `json:"uuid"`
+	EntityId     uuid.UUID `gorm:"primaryKey; type:uuid;default:uuid_generate_v4()"`
 	Enabled      bool      //for audit purposes
 	CreationDate time.Time //for audit purposes
 	DisableDate  time.Time //for audit purposes
-	CreatedBy    string    //for audit purposes
+	CreatedBy    uuid.UUID //for audit purposes
 	Updated      time.Time //for audit purposes
-	UpdatedBy    string    //for audit purposes
+	UpdatedBy    uuid.UUID //for audit purposes
 	EntityName   string    // Name of the entity (e.g. andikem Mexico S.A. de C.V)
 	FriendlyName string    // Name to be displayed in afriendly way (e.g. Andikem Mexico)
 	CountryId    string    // 3-char ISO code - foreign key from country table
-	SegmentId    string    // Segment id - foreign key from segment table
+	SegmentId    uuid.UUID // Segment id - foreign key from segment table
 }
 
 // Object Type: Table
 //FacilityStr implements the data structure to characterise facilities on the Kraken application
 type FacilityStr struct {
-	FacilityId         string      `json:"uuid"`
+	FacilityId         uuid.UUID   `gorm:"primaryKey; type:uuid;default:uuid_generate_v4()"`
 	Enabled            bool        //for audit purposes
 	CreationDate       time.Time   //for audit purposes
 	DisableDate        time.Time   //for audit purposes
-	CreatedBy          string      //for audit purposes
+	CreatedBy          uuid.UUID   //for audit purposes
 	Updated            time.Time   //for audit purposes
-	UpdatedBy          string      //for audit purposes
+	UpdatedBy          uuid.UUID   //for audit purposes
 	FacilityName       string      `json:"facility_name"` // Facility name
 	IsPort             bool        // True if the facility is a port
 	TypeOfTerminal     string      `json:"type_of_terminal"`    // river, sea, truck, rail
 	ThirdPartyServices bool        `json:"third_party_service"` // True if the terminal provides public services to third party customers (public terminal)
 	FacilityAddress    *AddressStr `json:"facility_address"`    // Location
 	FacilityCoord      *LatLong    `json:"facility_coord"`      // Geographic coordinates
-	EntityId           string      // Entity id - foreign key from entity table
+	EntityId           uuid.UUID   // Entity id - foreign key from entity table
 }
 
 // Object Type: Table
 // Stores all tanks which have been documented, whether they are under andikem's control or not
 type TankStr struct {
-	TkId            string        `json:"uuid"`
+	TkId            uuid.UUID     `gorm:"primaryKey; type:uuid;default:uuid_generate_v4()"`
 	Enabled         bool          //for audit purposes
 	CreationDate    time.Time     //for audit purposes
 	DisableDate     time.Time     //for audit purposes
-	CreatedBy       string        //for audit purposes
+	CreatedBy       uuid.UUID     //for audit purposes
 	Updated         time.Time     //for audit purposes
-	UpdatedBy       string        //for audit purposes
+	UpdatedBy       uuid.UUID     //for audit purposes
 	TkName          string        `json:"tk_name"`         // tank name as it is defined by the facility
 	TkDescr         *TankDescrStr `json:"tk_description"`  // jsonb data that holds the technical description of the tank
-	TkCalibrationId string        `json:"tk_cal_table_id"` // uuid for the current tank calibration table - foreign key from tank callibration table
+	TkCalibrationId uuid.UUID     `json:"tk_cal_table_id"` // uuid for the current tank calibration table - foreign key from tank callibration table
 	TkCoord         *LatLong      `json:"tk_coord"`        // Geographic location of the tank
-	FacilityId      string        `json:"facility_id"`     // uuid for the tank's facility - foreign key from facility table
+	FacilityId      uuid.UUID     `json:"facility_id"`     // uuid for the tank's facility - foreign key from facility table
 }
 
 // Standard tank description layout as defined by Anditerminals
@@ -75,9 +79,9 @@ type TankDescrStr struct {
 // Object Type: Table
 // Stores all tank calibration tables, which serve as base for the estimation of inventory per tank in MT
 type TkCalTableStr struct {
-	CalibrationId    string
-	CalibrationTable []byte //raw json
-	enabled          bool
+	CalibrationId    uuid.UUID `gorm:"primaryKey; type:uuid;default:uuid_generate_v4()"`
+	CalibrationTable []byte    //raw json
+	Enabled          bool
 	CreationDate     time.Time
 	DisableDate      time.Time
 }
@@ -115,8 +119,17 @@ type TkLinkedAssetsStr struct {
 
 // Linked asset
 type FacAssetStr struct {
-	AssetId string // uuid of the individual asset - foreign key to asset table
-	Type    string // Assett type / function
+	AssetId uuid.UUID // uuid of the individual asset - foreign key to asset table
+	Type    string    // Assett type / function
+}
+
+// Object Type: Table
+type PortStr struct {
+	Uuid        uuid.UUID `gorm:"primaryKey; type:uuid;default:uuid_generate_v4()"`
+	PortName    string
+	IMOCode     string
+	Coordinates LatLong   // Port location
+	FacilityId  uuid.UUID // id of the corresponding facility (if any) - foreign key to facility table
 }
 
 // Object Type: Table
