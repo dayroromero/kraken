@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package proto;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "./pkg/grpc";
+
+service ProductsService {
+    rpc UpsertChemical(UpserChemicalRequest) returns (UpserChemicalResponse) {}
+    rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse) {}
+}
+
+message UpserChemicalRequest {
+    bool status = 1;
+    string disableNote  = 2;
+    string chemicalName  = 3;
+}
+
+message UpserChemicalResponse {
+    int64 status = 1;
+    string error = 2;
+}
+
+message CreateProductRequest {
+    bool Status = 1;
+	string DisableNote = 2;
+	string SKU = 3;
+	string ProductName = 4;
+	string ProductDescriptor = 5;
+	google.protobuf.Struct ProdNameLocalization = 6;
+	string UnCode = 7;
+	string ChrisCode = 8;
+	string EinecNumber = 9;
+	string HSCode = 10;
+	string ChemUniqueId = 11;
+}
+
+message CreateProductResponse {
+    int64 status = 1;
+    string error = 2;
+}

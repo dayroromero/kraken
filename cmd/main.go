@@ -11,6 +11,8 @@ import (
 	"strings"
 	"syscall"
 
+	pb "github.com/andikem/kraken/pkg/grpc"
+	"github.com/andikem/kraken/pkg/service/product"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -20,6 +22,10 @@ func main() {
 	grpcServer := grpc.NewServer()
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/", home)
+
+	s := product.Server{}
+
+	pb.RegisterProductsServiceServer(grpcServer, &s)
 
 	ctx := context.Background()
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
