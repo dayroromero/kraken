@@ -22,7 +22,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProductsServiceClient interface {
-	UpsertChemical(ctx context.Context, in *UpserChemicalRequest, opts ...grpc.CallOption) (*UpserChemicalResponse, error)
 	CreateProduct(ctx context.Context, in *CreateProductRequest, opts ...grpc.CallOption) (*CreateProductResponse, error)
 }
 
@@ -32,15 +31,6 @@ type productsServiceClient struct {
 
 func NewProductsServiceClient(cc grpc.ClientConnInterface) ProductsServiceClient {
 	return &productsServiceClient{cc}
-}
-
-func (c *productsServiceClient) UpsertChemical(ctx context.Context, in *UpserChemicalRequest, opts ...grpc.CallOption) (*UpserChemicalResponse, error) {
-	out := new(UpserChemicalResponse)
-	err := c.cc.Invoke(ctx, "/proto.ProductsService/UpsertChemical", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *productsServiceClient) CreateProduct(ctx context.Context, in *CreateProductRequest, opts ...grpc.CallOption) (*CreateProductResponse, error) {
@@ -56,7 +46,6 @@ func (c *productsServiceClient) CreateProduct(ctx context.Context, in *CreatePro
 // All implementations should embed UnimplementedProductsServiceServer
 // for forward compatibility
 type ProductsServiceServer interface {
-	UpsertChemical(context.Context, *UpserChemicalRequest) (*UpserChemicalResponse, error)
 	CreateProduct(context.Context, *CreateProductRequest) (*CreateProductResponse, error)
 }
 
@@ -64,9 +53,6 @@ type ProductsServiceServer interface {
 type UnimplementedProductsServiceServer struct {
 }
 
-func (UnimplementedProductsServiceServer) UpsertChemical(context.Context, *UpserChemicalRequest) (*UpserChemicalResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpsertChemical not implemented")
-}
 func (UnimplementedProductsServiceServer) CreateProduct(context.Context, *CreateProductRequest) (*CreateProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateProduct not implemented")
 }
@@ -80,24 +66,6 @@ type UnsafeProductsServiceServer interface {
 
 func RegisterProductsServiceServer(s grpc.ServiceRegistrar, srv ProductsServiceServer) {
 	s.RegisterService(&ProductsService_ServiceDesc, srv)
-}
-
-func _ProductsService_UpsertChemical_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpserChemicalRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProductsServiceServer).UpsertChemical(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.ProductsService/UpsertChemical",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductsServiceServer).UpsertChemical(ctx, req.(*UpserChemicalRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _ProductsService_CreateProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -125,10 +93,6 @@ var ProductsService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.ProductsService",
 	HandlerType: (*ProductsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "UpsertChemical",
-			Handler:    _ProductsService_UpsertChemical_Handler,
-		},
 		{
 			MethodName: "CreateProduct",
 			Handler:    _ProductsService_CreateProduct_Handler,

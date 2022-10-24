@@ -5,7 +5,7 @@ import (
 )
 
 // Object Type: Table
-type Product struct {
+type GoProduct struct {
 	ProductId         uuid.UUID `gorm:"primaryKey; type:uuid;default:uuid_generate_v4()"`
 	Status            bool      //for audit purposes
 	DisableNote       string    //Audit purposes
@@ -20,8 +20,8 @@ type Product struct {
 	ChemUniqueId uuid.UUID // Unique chemical substance ID
 }
 
-// Object Type: Table
-type ProductGorm struct {
+// Object Type: Table, represents DTO
+type Product struct {
 	ProductId         uuid.UUID `gorm:"primaryKey; type:uuid;default:uuid_generate_v4()"`
 	Status            bool      //for audit purposes
 	DisableNote       string    //Audit purposes
@@ -38,36 +38,36 @@ type ProductGorm struct {
 
 // FromEntity respects the gorm_generics.GormModel interface
 // Creates new GORM model from Entity.
-func (g ProductGorm) FromEntity(product Product) interface{} {
-	return ProductGorm{
-		ProductId:         product.ProductId,
-		Status:            product.Status,
-		DisableNote:       product.DisableNote,
-		SKU:               product.SKU,
-		ProductName:       product.ProductName,
-		ProductDescriptor: product.ProductDescriptor,
-		UnCode:            product.UnCode,
-		ChrisCode:         product.ChrisCode,
-		EinecNumber:       product.EinecNumber,
-		HSCode:            product.HSCode,
-		ChemUniqueId:      product.ChemUniqueId,
+func (g Product) FromEntity(goproduct GoProduct) interface{} {
+	return Product{
+		Status:            goproduct.Status,
+		DisableNote:       goproduct.DisableNote,
+		ProductId:         goproduct.ProductId,
+		SKU:               goproduct.SKU,
+		ProductName:       goproduct.ProductName,
+		ProductDescriptor: goproduct.ProductDescriptor,
+		UnCode:            goproduct.UnCode,
+		ChrisCode:         goproduct.ChrisCode,
+		EinecNumber:       goproduct.EinecNumber,
+		HSCode:            goproduct.HSCode,
+		ChemUniqueId:      goproduct.ChemUniqueId,
 	}
 }
 
 // ToEntity respects the gorm_generics.GormModel interface
 // Creates new Entity from GORM model.
-func (g ProductGorm) ToEntity() Product {
-	return Product{
-		ProductId:         g.ProductId,
-		Status:            g.Status,
-		DisableNote:       g.DisableNote,
-		SKU:               g.SKU,
-		ProductName:       g.ProductName,
-		ProductDescriptor: g.ProductDescriptor,
-		UnCode:            g.UnCode,
-		ChrisCode:         g.ChrisCode,
-		EinecNumber:       g.EinecNumber,
-		HSCode:            g.HSCode,
-		ChemUniqueId:      g.ChemUniqueId,
+func (p Product) ToEntity() GoProduct {
+	return GoProduct{
+		ProductId:         p.ProductId,
+		Status:            p.Status,
+		DisableNote:       p.DisableNote,
+		SKU:               p.SKU,
+		ProductName:       p.ProductName,
+		ProductDescriptor: p.ProductDescriptor,
+		UnCode:            p.UnCode,
+		ChrisCode:         p.ChrisCode,
+		EinecNumber:       p.EinecNumber,
+		HSCode:            p.HSCode,
+		ChemUniqueId:      p.ChemUniqueId,
 	}
 }

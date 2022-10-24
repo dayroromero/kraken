@@ -29,35 +29,31 @@ func (s *Server) CreateProduct(ctx context.Context, req *pb.CreateProductRequest
 
 	db := db.Init(dbUrl)
 
-	repository := gorm_generics.NewRepository[models.ProductGorm, models.Product](db.DB)
+	repository := gorm_generics.NewRepository[models.Product, models.GoProduct](db.DB)
 
-	product := models.Product{
-		Status:            true,
-		DisableNote:       "",
-		SKU:               "",
-		ProductName:       "Test",
-		ProductDescriptor: "Test",
-		UnCode:            "",
-		ChrisCode:         "",
-		EinecNumber:       "",
-		HSCode:            "",
-		ChemUniqueId:      uuid.UUID{},
+	product := models.GoProduct{
+		Status:            req.Status,
+		DisableNote:       req.DisableNote,
+		SKU:               req.SKU,
+		ProductName:       req.ProductName,
+		ProductDescriptor: req.ProductDescriptor,
+		UnCode:            req.UnCode,
+		ChrisCode:         req.ChrisCode,
+		EinecNumber:       req.EinecNumber,
+		HSCode:            req.HSCode,
+		ChemUniqueId:      uuid.FromStringOrNil(req.ChemUniqueId),
 	}
 
 	err = repository.Insert(ctx, &product)
 	if err != nil {
 		log.Fatal(err)
+
+		return &pb.CreateProductResponse{
+			Status: http.StatusBadGateway,
+		}, err
 	}
 
 	return &pb.CreateProductResponse{
-		Status: http.StatusOK,
-	}, nil
-}
-
-
-func (s *Server) UpsertChemical(ctx context.Context, req *pb.UpserChemicalRequest) (*pb.UpserChemicalResponse, error) {
-
-	return &pb.UpserChemicalResponse{
 		Status: http.StatusOK,
 	}, nil
 }
