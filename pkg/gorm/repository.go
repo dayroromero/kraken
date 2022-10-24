@@ -58,3 +58,16 @@ func (r *GormRepository[M, E]) Find(ctx context.Context, specification Specifica
 
 	return result, nil
 }
+
+func (r *GormRepository[M, E]) Update(ctx context.Context, entity *E) error {
+	var start M
+	model := start.FromEntity(*entity).(M)
+
+	err := r.db.WithContext(ctx).Updates(&model).Error
+	if err != nil {
+		return err
+	}
+
+	*entity = model.ToEntity()
+	return nil
+}
