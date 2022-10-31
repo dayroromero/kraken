@@ -1,13 +1,10 @@
 package config
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/secretsmanager"
 	discovery "github.com/gkarthiks/k8s-discovery"
 )
 
@@ -20,6 +17,8 @@ var (
 )
 
 func GetEnv() (namespace string, err error) {
+	// localServer := getDefaultServer()
+
 	k8s, err = discovery.NewK8s()
 	if err != nil {
 		log.Fatal(err.Error())
@@ -38,32 +37,40 @@ func GetEnv() (namespace string, err error) {
 }
 
 func GetAwsSecret(namespace string) (keyvalue string, err error) {
-	secretName := "sparrow/devSparrowDBPostgres"
-	region := "us-east-1"
-	var secret Secret
+	// secretName := "sparrow/devSparrowDBPostgres"
+	// region := "us-east-1"
+	// var secret Secret
 
-	switch namespace {
-	case "jx-production":
-		GetAwsSecret(secretName)
-	case "jx-staging":
-		GetAwsSecret(secretName)
-	default:
-		GetAwsSecret(secretName)
-	}
+	// switch namespace {
+	// case "jx-production":
+	// 	GetAwsSecret(secretName)
+	// case "jx-staging":
+	// 	GetAwsSecret(secretName)
+	// default:
+	// 	GetAwsSecret(secretName)
+	// }
 
-	sess := session.Must(session.NewSession())
+	// sess := session.Must(session.NewSession())
 
-	svc := secretsmanager.New(sess, aws.NewConfig().WithRegion(region))
+	// svc := secretsmanager.New(sess, aws.NewConfig().WithRegion(region))
 
-	result, err := svc.GetSecretValue(&secretsmanager.GetSecretValueInput{SecretId: &secretName})
-	if err != nil {
-		log.Fatal(err.Error())
-		return
-	}
+	// result, err := svc.GetSecretValue(&secretsmanager.GetSecretValueInput{SecretId: &secretName})
+	// if err != nil {
+	// 	log.Fatal(err.Error())
+	// 	return
+	// }
 
-	json.Unmarshal([]byte(*result.SecretString), &secret)
+	// json.Unmarshal([]byte(*result.SecretString), &secret)
 
-	keyvalue = secret.DevSparrowDBPostgres
+	// keyvalue = secret.DevSparrowDBPostgres
+	keyvalue = "postgresql://postgres:postgres@localhost:5432/sparrow_db?sslmode=disable"
 
 	return
+}
+
+func getDefaultServer() string {
+	if server := os.Getenv("DEFAULT_SERVER"); len(server) > 0 {
+		return server
+	}
+	return "http://localhost:8080"
 }
