@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package proto;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "./pkg/grpc";
+
+service BusinessPartnerService {
+    rpc CreateBusinessPartner(CreateBusinessPartnerRequest) returns (CreateBusinessPartnerResponse) {}
+    rpc UpdateBusinessPartner(UpdateBusinessPartnerRequest) returns (CreateBusinessPartnerResponse) {}
+}
+
+message CreateBusinessPartnerRequest {
+	bool Status = 1;
+	string DisableNote = 2;
+	string CustomerName = 3;
+	bytes Contact = 4;
+	bytes Address = 5;
+	bool IsSupplier = 6;
+	bool IsCustomer = 7;
+	bool IsShippingAgent = 8;
+	bool IsTrucker = 9;
+	google.protobuf.Struct TaxId = 10;
+	bool IsChild = 11;
+	string ParentCustomer = 12;
+}
+
+message CreateBusinessPartnerResponse {
+    int64 status = 1;
+    string error = 2;
+}
+
+message UpdateBusinessPartnerRequest {
+  	string BusinessPartnerId = 1;
+	bool Status = 2;
+	string DisableNote = 3;
+	string CustomerName = 4;
+	google.protobuf.Struct Contact = 5;
+	google.protobuf.Struct Address = 6;
+	bool IsSupplier = 7;
+	bool IsCustomer = 8;
+	bool IsShippingAgent = 9;
+	bool IsTrucker = 10;
+	google.protobuf.Struct TaxId = 11;
+	bool IsChild = 12;
+	string ParentCustomer = 13;
+}
