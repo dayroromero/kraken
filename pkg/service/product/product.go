@@ -76,3 +76,33 @@ func (s *Server) UpdateProduct(ctx context.Context, req *pb.UpdateProductRequest
 		Status: http.StatusOK,
 	}, nil
 }
+
+func (s *Server) GetAllProducts(ctx context.Context, req *pb.CreateProductRequest) (*pb.CreateProductResponse, error) {
+	repository := gorm_generics.NewRepository[models.Product, models.GoProduct](s.H.DB)
+
+	product := models.GoProduct{
+		Status:            req.Status,
+		DisableNote:       req.DisableNote,
+		SKU:               req.SKU,
+		ProductName:       req.ProductName,
+		ProductDescriptor: req.ProductDescriptor,
+		UnCode:            req.UnCode,
+		ChrisCode:         req.ChrisCode,
+		EinecNumber:       req.EinecNumber,
+		HSCode:            req.HSCode,
+		ChemUniqueId:      uuid.FromStringOrNil(req.ChemUniqueId),
+	}
+
+	err := repository.Insert(ctx, &product)
+	if err != nil {
+		log.Fatal(err)
+
+		return &pb.CreateProductResponse{
+			Status: http.StatusBadGateway,
+		}, err
+	}
+
+	return &pb.CreateProductResponse{
+		Status: http.StatusOK,
+	}, nil
+}

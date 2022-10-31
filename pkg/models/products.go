@@ -4,7 +4,7 @@ import (
 	"github.com/gofrs/uuid"
 )
 
-// Object Type: Table
+// Represents the interface to interact with gorm's generic methods
 type GoProduct struct {
 	ProductId         uuid.UUID `gorm:"primaryKey; type:uuid;default:uuid_generate_v4()"`
 	Status            bool      //for audit purposes
