@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -12,10 +11,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/andikem/kraken/pkg/config"
-	"github.com/andikem/kraken/pkg/db"
-	pb "github.com/andikem/kraken/pkg/grpc"
-	"github.com/andikem/kraken/pkg/service/product"
+	"github.com/andikem/kraken/pkg/routes"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -26,23 +22,7 @@ func main() {
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/", home)
 
-	env, err := config.GetEnv()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	dbUrl, err := config.GetAwsSecret(env)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	h := db.Init(dbUrl)
-
-	s := product.Server{
-		H: h,
-	}
-
-	pb.RegisterProductsServiceServer(grpcServer, &s)
+	routes.RegisterRoutes(grpcServer)
 
 	ctx := context.Background()
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
