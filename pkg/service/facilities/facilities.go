@@ -9,6 +9,7 @@ import (
 	gorm_generics "github.com/andikem/kraken/pkg/gorm"
 	pb "github.com/andikem/kraken/pkg/grpc"
 	"github.com/andikem/kraken/pkg/models"
+	"github.com/google/uuid"
 )
 
 
@@ -20,7 +21,17 @@ func (s *Server) CreateFacility(ctx context.Context, req *pb.CreateFacilityReque
 	repository := gorm_generics.NewRepository[models.Facilities, models.GoFacilities](s.H.DB)
 
 	facility := models.GoFacilities{
-		
+		Status: req.Status,
+		DisableNote: req.DisableNote,
+		FacilityName: req.FacilityName,
+		IsPort: req.IsPort,
+		PortId: uuid.MustParse(req.PortId),
+		TypeOfTerminal: req.TypeOfTerminal,
+		ThirdPartyServices: req.ThirdPartyServices,
+		// FacilityAddress: req.FacilityAddress,
+		// FacilityCoordinate: req.FacilityCoordinate,
+		EntityId: uuid.MustParse(req.EntityId),
+		// FacilityManager: req.FacilityManager,
 	}
 
 	err := repository.Insert(ctx, &facility)
@@ -41,7 +52,18 @@ func (s *Server) UpdateFacility(ctx context.Context, req *pb.UpdateFacilityReque
 	repository := gorm_generics.NewRepository[models.Facilities, models.GoFacilities](s.H.DB)
 
 	facility := models.GoFacilities{
-
+		FacilityId: uuid.MustParse(req.FacilityId),
+		Status: req.Status,
+		DisableNote: req.DisableNote,
+		FacilityName: req.FacilityName,
+		IsPort: req.IsPort,
+		PortId: uuid.MustParse(req.PortId),
+		TypeOfTerminal: req.TypeOfTerminal,
+		ThirdPartyServices: req.ThirdPartyServices,
+		// FacilityAddress: req.FacilityAddress,
+		// FacilityCoordinate: req.FacilityCoordinate,
+		EntityId: uuid.MustParse(req.EntityId),
+		// FacilityManager: req.FacilityManager,
 	}
 
 	err := repository.Update(ctx, &facility)
