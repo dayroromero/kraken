@@ -10,7 +10,6 @@ import (
 	gorm_generics "github.com/andikem/kraken/pkg/gorm"
 	pb "github.com/andikem/kraken/pkg/grpc"
 	"github.com/andikem/kraken/pkg/models"
-	guuid "github.com/gofrs/uuid"
 	"github.com/google/uuid"
 )
 
@@ -50,33 +49,32 @@ func (s *Server) CreateBusinessPartner(ctx context.Context, req *pb.CreateBusine
 	}, nil
 }
 
-func (s *Server) UpdateProduct(ctx context.Context, req *pb.UpdateProductRequest) (*pb.CreateProductResponse, error) {
-	repository := gorm_generics.NewRepository[models.Product, models.GoProduct](s.H.DB)
+func (s *Server) UpdateBusinessPartner(ctx context.Context, req *pb.UpdateBusinessPartnerRequest) (*pb.CreateBusinessPartnerResponse, error) {
+	repository := gorm_generics.NewRepository[models.BussinesPartner, models.GoBussinesPartner](s.H.DB)
 
-	product := models.GoProduct{
-		ProductId: 		   guuid.FromStringOrNil(req.ProductId),
-		Status:            req.Status,
-		DisableNote:       req.DisableNote,
-		SKU:               req.SKU,
-		ProductName:       req.ProductName,
-		ProductDescriptor: req.ProductDescriptor,
-		UnCode:            req.UnCode,
-		ChrisCode:         req.ChrisCode,
-		EinecNumber:       req.EinecNumber,
-		HSCode:            req.HSCode,
-		ChemUniqueId:      guuid.FromStringOrNil(req.ChemUniqueId),
+	bp := models.GoBussinesPartner{
+		BusinessPartnerId: uuid.MustParse(req.BusinessPartnerId),
+		Status: req.Status,
+		DisableNote: req.DisableNote,
+		CustomerName: req.CustomerName,
+		IsSupplier: req.IsSupplier,
+		IsCustomer: req.IsCustomer,
+		IsShippingAgent: req.IsShippingAgent,
+		IsTrucker: req.IsTrucker,
+		IsChild: req.IsChild,
+		ParentCustomer: uuid.MustParse(req.ParentCustomer),
 	}
 
-	err := repository.Update(ctx, &product)
+	err := repository.Update(ctx, &bp)
 	if err != nil {
 		log.Fatal(err)
 
-		return &pb.CreateProductResponse{
+		return &pb.CreateBusinessPartnerResponse{
 			Status: http.StatusBadGateway,
 		}, err
 	}
 
-	return &pb.CreateProductResponse{
+	return &pb.CreateBusinessPartnerResponse{
 		Status: http.StatusOK,
 	}, nil
 }

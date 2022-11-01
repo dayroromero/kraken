@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package grpc;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "./pkg/grpc";
+
+service FacilitiesService {
+    rpc CreateFacility(CreateFacilityRequest) returns (CreateFacilityResponse) {}
+    rpc UpdateFacility(UpdateFacilityRequest) returns (CreateFacilityResponse) {}
+}
+
+message CreateFacilityRequest {
+	bool Status = 1;
+	string DisableNote = 2;
+	string FacilityName = 3;
+	bool IsPort = 4;
+	string PortId= 5;
+	string TypeOfTerminal = 6;
+	bool ThirdPartyServices = 7;
+	google.protobuf.Struct FacilityAddress = 8;
+	google.protobuf.Struct FacilityCoordinate = 9;
+	string EntityId = 10;
+	google.protobuf.Struct FacilityManager = 11;
+}
+
+message CreateFacilityResponse {
+    int64 status = 1;
+    string error = 2;
+}
+
+message UpdateFacilityRequest {
+	string FacilityId = 1;
+	bool Status = 2;
+	string DisableNote = 3;
+	string FacilityName = 4;
+	bool IsPort = 5;
+	string PortId= 6;
+	string TypeOfTerminal = 7;
+	bool ThirdPartyServices = 8;
+	google.protobuf.Struct FacilityAddress = 9;
+	google.protobuf.Struct FacilityCoordinate = 10;
+	string EntityId =  11;
+	google.protobuf.Struct FacilityManager =  12;
+}
