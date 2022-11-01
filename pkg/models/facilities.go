@@ -39,7 +39,7 @@ type Facilities struct {
 
 // FromEntity respects the gorm_generics.GormModel interface
 // Creates new GORM model from Entity.
-func (g Facilities) FromEntity(gofacilities GoFacilities) interface{} {
+func (f Facilities) FromEntity(gofacilities GoFacilities) interface{} {
 	return Facilities{
 		FacilityId:         gofacilities.FacilityId,
 		Status:             gofacilities.Status,
