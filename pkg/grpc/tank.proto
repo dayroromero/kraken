@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package grpc;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "./pkg/grpc";
+
+service TankService {
+    rpc CreateTank(CreateTankRequest) returns (CreateTankResponse) {}
+    rpc UpdateTank(UpdateTankRequest) returns (CreateTankResponse) {}
+}
+
+message CreateTankRequest {
+    bool Status = 1;
+    string DisableNote = 2;
+    string TankName = 3;
+    google.protobuf.Struct TankDescription = 4;
+    google.protobuf.Struct TankCoordinate = 5;
+    string FacilityId  = 6;
+}
+
+ message CreateTankResponse {
+    int64 status = 1;
+    string error = 2;
+ }
+
+ message UpdateTankRequest {
+    string TankId = 1;
+    bool Status = 2;
+    string DisableNote = 3;
+    string TankName = 4;
+    google.protobuf.Struct TankDescription = 5;
+    google.protobuf.Struct TankCoordinate = 6;
+    string FacilityId  = 7;
+ }
