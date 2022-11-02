@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/gofrs/uuid"
+	"github.com/google/uuid"
 )
 
 // Represents the interface to interact with gorm's generic methods

@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package grpc;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "./pkg/grpc";
+
+service ShippingBOLService {
+    rpc CreateBol(CreateBolRequest) returns (CreateBolResponse) {}
+    rpc UpdateBol(UpdateBolRequest) returns (CreateBolResponse) {}
+}
+
+message CreateBolRequest {
+    bool Status = 1;
+    string DisableNote = 2;
+    google.protobuf.Timestamp ShippingETA = 3;
+    google.protobuf.Timestamp ShippingETD = 4;
+    google.protobuf.Timestamp ArrivalDate = 5;
+    google.protobuf.Timestamp CloseDate = 6;
+    bool IsNullandVoid = 7;
+    string OriginalBOL = 8;
+    bool IsDelivered = 9;
+    string ShippingLineId = 10;
+    string VesselId = 11;
+    string Voyage = 12;
+    string ProductId = 13;
+    string BPReceiverId = 14;
+    float Quantity = 15;
+    string DestinationPortId = 16;
+}
+
+message CreateBolResponse {
+    int64 status = 1;
+    string error = 2;
+}
+
+message UpdateBolRequest {
+    string ShippingBOLId = 1;
+    bool Status = 2;
+    string DisableNote = 3;
+    google.protobuf.Timestamp ShippingETA = 4;
+    google.protobuf.Timestamp ShippingETD = 5;
+    google.protobuf.Timestamp ArrivalDate = 6;
+    google.protobuf.Timestamp CloseDate = 7;
+    bool IsNullandVoid = 8;
+    string OriginalBOL = 9;
+    bool IsDelivered = 10;
+    string ShippingLineId = 11;
+    string VesselId = 12;
+    string Voyage = 13;
+    string ProductId = 14;
+    string BPReceiverId = 15;
+    float Quantity = 16;
+    string DestinationPortId = 17;
+}

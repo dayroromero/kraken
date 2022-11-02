@@ -9,7 +9,7 @@ import (
 	gorm_generics "github.com/andikem/kraken/pkg/gorm"
 	pb "github.com/andikem/kraken/pkg/grpc"
 	"github.com/andikem/kraken/pkg/models"
-	"github.com/gofrs/uuid"
+	"github.com/google/uuid"
 )
 
 type Server struct {
@@ -29,7 +29,7 @@ func (s *Server) CreateProduct(ctx context.Context, req *pb.CreateProductRequest
 		ChrisCode:         req.ChrisCode,
 		EinecNumber:       req.EinecNumber,
 		HSCode:            req.HSCode,
-		ChemUniqueId:      uuid.FromStringOrNil(req.ChemUniqueId),
+		ChemUniqueId:      uuid.MustParse(req.ChemUniqueId),
 	}
 
 	err := repository.Insert(ctx, &product)
@@ -50,7 +50,7 @@ func (s *Server) UpdateProduct(ctx context.Context, req *pb.UpdateProductRequest
 	repository := gorm_generics.NewRepository[models.Product, models.GoProduct](s.H.DB)
 
 	product := models.GoProduct{
-		ProductId: 		   uuid.FromStringOrNil(req.ProductId),
+		ProductId: 		  uuid.MustParse(req.ProductId),
 		Status:            req.Status,
 		DisableNote:       req.DisableNote,
 		SKU:               req.SKU,
@@ -60,7 +60,7 @@ func (s *Server) UpdateProduct(ctx context.Context, req *pb.UpdateProductRequest
 		ChrisCode:         req.ChrisCode,
 		EinecNumber:       req.EinecNumber,
 		HSCode:            req.HSCode,
-		ChemUniqueId:      uuid.FromStringOrNil(req.ChemUniqueId),
+		ChemUniqueId:      uuid.MustParse(req.ChemUniqueId),
 	}
 
 	err := repository.Update(ctx, &product)
@@ -90,7 +90,7 @@ func (s *Server) GetAllProducts(ctx context.Context, req *pb.CreateProductReques
 		ChrisCode:         req.ChrisCode,
 		EinecNumber:       req.EinecNumber,
 		HSCode:            req.HSCode,
-		ChemUniqueId:      uuid.FromStringOrNil(req.ChemUniqueId),
+		ChemUniqueId:      uuid.MustParse(req.ChemUniqueId),
 	}
 
 	err := repository.Insert(ctx, &product)
