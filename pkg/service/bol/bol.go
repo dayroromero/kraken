@@ -73,7 +73,6 @@ func (s *Server) UpdateBol(ctx context.Context, req *pb.UpdateBolRequest) (*pb.C
 		BPReceiverId: uuid.MustParse(req.BPReceiverId),
 		Quantity: req.Quantity,
 		DestinationPortId: uuid.MustParse(req.DestinationPortId),
-		
 	}
 
 	err := repository.Update(ctx, &bol)
