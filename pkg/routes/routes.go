@@ -7,6 +7,7 @@ import (
 	"github.com/andikem/kraken/pkg/db"
 	pb "github.com/andikem/kraken/pkg/grpc"
 	businesspartner "github.com/andikem/kraken/pkg/service/businessPartner"
+	"github.com/andikem/kraken/pkg/service/entities"
 	"github.com/andikem/kraken/pkg/service/facilities"
 	"github.com/andikem/kraken/pkg/service/product"
 
@@ -43,4 +44,10 @@ func RegisterRoutes(grpcServer *grpc.Server) {
 	}
 
 	pb.RegisterFacilitiesServiceServer(grpcServer, &s3)
+
+	s4 := entities.Server{
+		H: h,
+	}
+
+	pb.RegisterEntitiesServiceServer(grpcServer, &s4)
 }

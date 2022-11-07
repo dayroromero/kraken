@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package grpc;
+
+option go_package = "./pkg/grpc";
+
+service EntitiesService {
+    rpc CreateEntity(CreateEntityRequest) returns (CreateEntityResponse) {}
+    rpc UpdateEntity(UpdateEntityRequest) returns (CreateEntityResponse) {}
+}
+
+message CreateEntityRequest {
+    bool Status = 1;
+    string DisableNote = 2;
+    string EntityName = 3;
+    string FriendlyName = 4;
+    string CountryId = 5;
+    string SegmentId = 6;
+}
+
+message CreateEntityResponse {
+    int64 status = 1;
+    string error = 2;
+}
+
+message UpdateEntityRequest {
+    string EntityId = 1;
+    bool Status = 2;
+    string DisableNote = 3;
+    string EntityName = 4;
+    string FriendlyName = 5;
+    string CountryId = 6;
+    string SegmentId = 7;
+}
