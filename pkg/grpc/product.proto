@@ -9,7 +9,7 @@ option go_package = "./pkg/grpc";
 service ProductsService {
     rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse) {}
     rpc UpdateProduct(UpdateProductRequest) returns (CreateProductResponse) {}
-	// rpc GetAllProducts(GetProductsRequest) returns (GetProductsResponse) {}
+	rpc GetAllProducts(GetProductsRequest) returns (GetProductsResponse) {}
 }
 
 message CreateProductRequest {
@@ -27,8 +27,8 @@ message CreateProductRequest {
 }
 
 message CreateProductResponse {
-    int64 status = 1;
-    string error = 2;
+    int64 ReqStatus = 1;
+    string ReqError = 2;
 }
 
 message UpdateProductRequest {
@@ -44,4 +44,25 @@ message UpdateProductRequest {
 	string EinecNumber = 10;
 	string HSCode = 11;
 	string ChemUniqueId = 12;
+}
+
+message GetProductsRequest {
+	string filters = 1;
+}
+
+message GetProductsResponse {
+	string ProductId = 1;
+	bool Status = 2;
+	string DisableNote = 3;
+	string SKU = 4;
+	string ProductName = 5;
+	string ProductDescriptor = 6;
+	google.protobuf.Struct ProdNameLocalization = 7;
+	string UnCode = 8;
+	string ChrisCode = 9;
+	string EinecNumber = 10;
+	string HSCode = 11;
+	string ChemUniqueId = 12;
+	int64 ReqStatus = 13;
+    string ReqError = 14;
 }

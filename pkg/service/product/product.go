@@ -2,6 +2,8 @@ package product
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -37,12 +39,12 @@ func (s *Server) CreateProduct(ctx context.Context, req *pb.CreateProductRequest
 		log.Fatal(err)
 
 		return &pb.CreateProductResponse{
-			Status: http.StatusBadGateway,
+			ReqStatus: http.StatusBadGateway,
 		}, err
 	}
 
 	return &pb.CreateProductResponse{
-		Status: http.StatusOK,
+		ReqStatus: http.StatusOK,
 	}, nil
 }
 
@@ -68,41 +70,33 @@ func (s *Server) UpdateProduct(ctx context.Context, req *pb.UpdateProductRequest
 		log.Fatal(err)
 
 		return &pb.CreateProductResponse{
-			Status: http.StatusBadGateway,
+			ReqStatus: http.StatusBadGateway,
 		}, err
 	}
 
 	return &pb.CreateProductResponse{
-		Status: http.StatusOK,
+		ReqStatus: http.StatusOK,
 	}, nil
 }
 
-func (s *Server) GetAllProducts(ctx context.Context, req *pb.CreateProductRequest) (*pb.CreateProductResponse, error) {
-	repository := gorm_generics.NewRepository[models.Product, models.GoProduct](s.H.DB)
+func (s *Server) GetAllProducts(ctx context.Context, req *pb.GetProductsRequest) (*pb.GetProductsResponse, error) {
+	//repository := gorm_generics.NewRepository[models.Product, models.GoProduct](s.H.DB)
 
-	product := models.GoProduct{
-		Status:            req.Status,
-		DisableNote:       req.DisableNote,
-		SKU:               req.SKU,
-		ProductName:       req.ProductName,
-		ProductDescriptor: req.ProductDescriptor,
-		UnCode:            req.UnCode,
-		ChrisCode:         req.ChrisCode,
-		EinecNumber:       req.EinecNumber,
-		HSCode:            req.HSCode,
-		ChemUniqueId:      uuid.MustParse(req.ChemUniqueId),
-	}
+	
 
-	err := repository.Insert(ctx, &product)
+	//products, err := repository.Find(ctx, &filters)
+
+	filters, err := json.Marshal(req.Filters)
 	if err != nil {
 		log.Fatal(err)
-
-		return &pb.CreateProductResponse{
-			Status: http.StatusBadGateway,
-		}, err
 	}
 
-	return &pb.CreateProductResponse{
-		Status: http.StatusOK,
+	fmt.Println(filters)
+
+
+
+	return &pb.GetProductsResponse{
+		
+		ReqStatus: http.StatusOK,
 	}, nil
 }
