@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package grpc;
+
+option go_package = "./pkg/grpc";
+
+service FacilityAssetService {
+    rpc CreateFacilityAsset(CreateFacilityAssetRequest) returns (CreateFacilityAssetResponse) {}
+    rpc UpdateFacilityAsset(UpdateFacilityAssetRequest) returns (CreateFacilityAssetResponse) {}
+}
+
+message CreateFacilityAssetRequest {
+    bool Enabled = 1;
+    string Name = 2;
+    string Description = 3;
+    string InventoryId = 4;
+    string AssetType = 5;
+    string FacilityId = 6;
+}
+
+message CreateFacilityAssetResponse {
+    int64 ReqStatus = 1;
+    string ReqError = 2;
+}
+
+message UpdateFacilityAssetRequest {
+    string FacilityAssetId = 1;
+    bool Enabled = 2;
+    string Name = 3;
+    string Description = 4;
+    string InventoryId = 5;
+    string AssetType = 6;
+    string FacilityId = 7;
+}
